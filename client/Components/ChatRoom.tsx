@@ -8,7 +8,7 @@ interface RoomProps {
   roomID: string | string[] | undefined;
 }
 
-const socket = io("http://54.95.188.78");
+const socket = io("http://18.181.174.248");
 
 let chatkey: number = 0;
 let newChats: string[];
@@ -19,6 +19,7 @@ const ChatRoom: React.FC<RoomProps> = ({ username, roomID }) => {
   const submitHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     socket.emit("send-msg", userChat);
+    setUserChat("");
   };
 
   useEffect(() => {

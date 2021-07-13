@@ -4,7 +4,7 @@ const socketIo = require("socket.io");
 const PORT = process.env.PORT || 5000;
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://18.181.174.248:3000",
   },
 });
 io.on("connection", (socket) => {
