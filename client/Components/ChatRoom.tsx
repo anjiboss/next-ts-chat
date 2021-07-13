@@ -8,7 +8,7 @@ interface RoomProps {
   roomID: string | string[] | undefined;
 }
 
-const socket = io("http://localhost:5000");
+const socket = io("http://54.95.188.78");
 
 let chatkey: number = 0;
 let newChats: string[];
