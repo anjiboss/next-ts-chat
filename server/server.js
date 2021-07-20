@@ -4,17 +4,17 @@ const socketIo = require("socket.io");
 const PORT = process.env.PORT || 5000;
 const io = socketIo(server, {
   cors: {
-    origin: "http://18.181.174.248:3000",
+    origin: "http://localhost:3000",
   },
 });
 io.on("connection", (socket) => {
   console.log("con");
-  socket.on("joinRoom", (roomID) => {
+  socket.on("joinRoom", ({ username, roomID }) => {
     console.log(roomID);
     socket.join(roomID);
-    io.to(roomID).emit("joinedRoom", "You Have Joined Room " + roomID);
-    socket.on("send-msg", (userChat) => {
-      io.to(roomID).emit("recieved-msg", userChat);
+    io.to(roomID).emit("joinedRoom", username + " Have Joined Room " + roomID);
+    socket.on("send-msg", (chatInfo) => {
+      io.to(roomID).emit("recieved-msg", chatInfo);
     });
   });
 });
