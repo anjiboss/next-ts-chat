@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import chatStyle from "../styles/chat.module.css";
 import { io } from "socket.io-client";
 
@@ -18,8 +18,15 @@ let newChats: string[];
 let newMsg: string;
 
 const ChatRoom: React.FC<RoomProps> = ({ username, roomID }) => {
+  // ***
+  // States
   const [userChat, setUserChat] = useState("");
   const [chats, setChats] = useState<ChatInfo[]>([]);
+
+  // **
+  // Reference
+  const chatRef = useRef() as MutableRefObject<HTMLDivElement>;
+
   const submitHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     socket.emit("send-msg", {
@@ -45,9 +52,12 @@ const ChatRoom: React.FC<RoomProps> = ({ username, roomID }) => {
       });
     }
   }, [roomID]);
+  useEffect(() => {
+    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [chats]);
   return (
     <div>
-      <div className={chatStyle.chatContainer}>
+      <div ref={chatRef} className={chatStyle.chatContainer}>
         <h3>Chat Content</h3>
         {chats.map((chat) => (
           <div
