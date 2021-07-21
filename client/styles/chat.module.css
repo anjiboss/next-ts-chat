@@ -14,3 +14,15 @@
 .inputBox input {
   width: 80%;
 }
+
+.sentMsg {
+  background-color: aqua;
+  border-radius: 3px;
+  margin: 10px;
+}
+.recievedMsg {
+  background-color: blanchedalmond;
+  text-align: right;
+  border-radius: 3px;
+  margin: 10px;
+}

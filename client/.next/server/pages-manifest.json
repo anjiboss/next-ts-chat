@@ -2,6 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
-  "/chat/[roomID]": "pages/chat/[roomID].js"
+  "/chat/[roomID]": "pages/chat/[roomID].js",
+  "/": "pages/index.js"
 }

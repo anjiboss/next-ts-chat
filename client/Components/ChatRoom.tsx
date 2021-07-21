@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import chatStyle from "../styles/chat.module.css";
 import { io } from "socket.io-client";
-import { GetStaticProps } from "next";
 
 interface RoomProps {
   username: string | undefined | string[];
   roomID: string | string[] | undefined;
+}
+interface ChatInfo {
+  username: string;
+  msg: string;
 }
 
 const socket = io("http://localhost:5000");
@@ -16,7 +19,7 @@ let newMsg: string;
 
 const ChatRoom: React.FC<RoomProps> = ({ username, roomID }) => {
   const [userChat, setUserChat] = useState("");
-  const [chats, setChats] = useState<string[]>([]);
+  const [chats, setChats] = useState<ChatInfo[]>([]);
   const submitHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     socket.emit("send-msg", {
@@ -34,12 +37,11 @@ const ChatRoom: React.FC<RoomProps> = ({ username, roomID }) => {
       });
 
       socket.on("joinedRoom", (msg) => {
-        setChats((chats) => [...chats, msg]);
+        setChats((chats) => [...chats, { username: "bot", msg: msg }]);
       });
-      socket.on("recieved-msg", ({ username, msg }) => {
+      socket.on("recieved-msg", (chatInfo) => {
         console.log(chats);
-        newMsg = username + ": " + msg;
-        setChats((chats) => [...chats, newMsg]);
+        setChats((chats) => [...chats, chatInfo]);
       });
     }
   }, [roomID]);
@@ -48,7 +50,17 @@ const ChatRoom: React.FC<RoomProps> = ({ username, roomID }) => {
       <div className={chatStyle.chatContainer}>
         <h3>Chat Content</h3>
         {chats.map((chat) => (
-          <div key={chatkey++}>{chat}</div>
+          <div
+            key={chatkey++}
+            className={
+              chat.username === username
+                ? chatStyle.sentMsg
+                : chatStyle.recievedMsg
+            }
+          >
+            {chat.msg}{" "}
+            {chat.username === username ? null : ": " + chat.username}
+          </div>
         ))}
       </div>
 
